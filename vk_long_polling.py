@@ -9,8 +9,15 @@ from dialogflow_intents import detect_intent
 
 
 def answer(event, vk_api):
+    """Answer to message written in messages section in vk group.
+
+    :param event: event when message is written
+    :param vk_api: VK API
+    :return: None
+    """
+
     message = detect_intent(event.text)
-    if not message is None:
+    if message is not None:
         vk_api.messages.send(
             user_id=event.user_id,
             message=message,

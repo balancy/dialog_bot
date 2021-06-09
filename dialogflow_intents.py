@@ -1,4 +1,5 @@
 import os
+import sys
 
 import google.api_core.exceptions
 import requests
@@ -10,6 +11,12 @@ JSON_WITH_PHRASES = ("https://dvmn.org/media/filer_public/a7/db/a7db66c0-1259-"
 
 
 def detect_intent(text):
+    """Uses dialogflow API to receive an answer to given text
+
+    :param text: given text
+    :return: answer
+    """
+
     session_client = dialogflow.SessionsClient()
     session = session_client.session_path(
         project=os.getenv('DIALOG_FLOW_PROJECT_ID'),
@@ -27,13 +34,19 @@ def detect_intent(text):
         query_input=query_input,
     )
 
-    if bool(response.query_result.intent):
-        return response.query_result.fulfillment_text
-    else:
-        return
+    return (response.query_result.fulfillment_text
+            if bool(response.query_result.intent) else None)
 
 
 def create_intent(display_name, training_phrases_parts, message_texts):
+    """Creates intent using dialogflow API.
+
+    :param display_name: name of intent
+    :param training_phrases_parts: training phrases
+    :param message_texts: responses to training phrases
+    :return: if intent created
+    """
+
     intents_client = dialogflow.IntentsClient()
 
     parent = dialogflow.AgentsClient.agent_path(
@@ -64,7 +77,12 @@ def create_intent(display_name, training_phrases_parts, message_texts):
         return False
 
 
-def read_intents_from_json():
+def read_data_from_json_file():
+    """Reads intents from json file.
+
+    :return: file content in structured format
+    """
+
     response = requests.get(JSON_WITH_PHRASES)
     response.raise_for_status()
 
@@ -74,7 +92,7 @@ def read_intents_from_json():
 if __name__ == "__main__":
     load_dotenv()
     try:
-        intents = read_intents_from_json()
+        intents = read_data_from_json_file()
     except requests.exceptions.HTTPError:
         sys.exit("No json file found")
 
