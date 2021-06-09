@@ -4,7 +4,7 @@ import google.api_core.exceptions
 from google.cloud import dialogflow
 
 
-def detect_intent(update, context):
+def detect_intent(text):
     session_client = dialogflow.SessionsClient()
     session = session_client.session_path(
         project=os.getenv('DIALOG_FLOW_PROJECT_ID'),
@@ -12,7 +12,7 @@ def detect_intent(update, context):
     )
 
     text_input = dialogflow.TextInput(
-        text=update.message.text,
+        text=text,
         language_code='ru',
     )
     query_input = dialogflow.QueryInput(text=text_input)
@@ -22,7 +22,14 @@ def detect_intent(update, context):
         query_input=query_input,
     )
 
-    update.message.reply_text(response.query_result.fulfillment_text)
+    response_text = response.query_result.fulfillment_text
+    return response_text if response_text else text
+
+
+def detect_intent_handler(update, context):
+    text = update.message.text
+    response_text = detect_intent(text)
+    update.message.reply_text(response_text)
 
 
 def create_intent(display_name, training_phrases_parts, message_texts):
@@ -51,7 +58,6 @@ def create_intent(display_name, training_phrases_parts, message_texts):
         intents_client.create_intent(
             request={"parent": parent, "intent": intent}
         )
+        return True
     except google.api_core.exceptions.BadRequest:
-        # intent already exists with this display name
-        pass
-    return
+        return False

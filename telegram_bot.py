@@ -3,8 +3,8 @@ import os
 from dotenv import load_dotenv
 from telegram.ext import CommandHandler, Filters, MessageHandler, Updater
 
-from intent_handlers import detect_intent
-from handlers import  greet_user
+from intent_handlers import detect_intent_handler
+from handlers import  greet_user_handler
 
 if __name__ == "__main__":
     load_dotenv()
@@ -13,8 +13,8 @@ if __name__ == "__main__":
     updater = Updater(BOT_API_TOKEN)
     dispatcher = updater.dispatcher
 
-    dispatcher.add_handler(CommandHandler("start", greet_user))
-    dispatcher.add_handler(MessageHandler(Filters.text, detect_intent))
+    dispatcher.add_handler(CommandHandler("start", greet_user_handler))
+    dispatcher.add_handler(MessageHandler(Filters.text, detect_intent_handler))
 
     updater.start_polling()
     updater.idle()
