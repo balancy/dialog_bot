@@ -1,3 +1,4 @@
+import logging
 import os
 import random
 
@@ -26,6 +27,10 @@ def answer(event, vk_api):
 
 
 if __name__ == "__main__":
+    logger = logging.getLogger(__file__)
+    logging.basicConfig(format="%(process)d %(levelname)s %(message)s")
+    logger.setLevel(logging.INFO)
+
     load_dotenv()
     vk_session = vk_api.VkApi(token=os.getenv("VK_TOKEN"))
     vk_api = vk_session.get_api()
