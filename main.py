@@ -3,8 +3,8 @@ import os
 from dotenv import load_dotenv
 from telegram.ext import CommandHandler, Filters, MessageHandler, Updater
 
-from dialog_flow_handler import detect_intent
-from handlers import echo_message, greet_user
+from intent_handlers import detect_intent
+from handlers import  greet_user
 
 if __name__ == "__main__":
     load_dotenv()
