@@ -39,8 +39,5 @@ if __name__ == "__main__":
     dispatcher.add_handler(CommandHandler("start", greet_user_handler))
     dispatcher.add_handler(MessageHandler(Filters.text, detect_intent_handler))
 
-    try:
-        updater.start_polling()
-    except Exception as e:
-        logger.warning("Что-то пошло не так: ", e)
+    updater.start_polling()
     updater.idle()
