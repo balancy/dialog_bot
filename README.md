@@ -32,7 +32,7 @@ poetry shell
 poetry install
 ```
 
-4. Rename `.env.example` to `.env` and define your proper values for environmental variables:
+4. Rename `.env.example` to `.env` and define your proper values for environment variables:
 
 - `TG_DIALOG_BOT_API_TOKEN` - token of your dialog telegram bot
 - `TG_LOGS_BOT_API_TOKEN` - token of your logs telegram bot
