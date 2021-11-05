@@ -5,10 +5,8 @@ from dotenv import load_dotenv
 from telegram import Bot
 from telegram.ext import CommandHandler, Filters, MessageHandler, Updater
 
-from bot_handlers import detect_intent_handler
-from bot_handlers import greet_user_handler
-
-logger = logging.getLogger("tg_bot_logger")
+from dialogflow_intents.detection import detect_intent
+from logger import get_logger
 
 
 class TelegramLogsHandler(logging.Handler):
@@ -22,11 +20,30 @@ class TelegramLogsHandler(logging.Handler):
         self.tg_bot.send_message(chat_id=self.chat_id, text=log_entry)
 
 
-if __name__ == "__main__":
-    logging.basicConfig(format="%(process)d %(levelname)s %(message)s")
-    logger.setLevel(logging.INFO)
+def greet_user_handler(update, context):
+    """Greeting handler."""
 
+    update.message.reply_text("Здравствуйте!")
+
+
+def detect_intent_handler(update, context):
+    """DialogFlow interaction handler for bot."""
+
+    text = update.message.text
+    try:
+        response_text = detect_intent(text)
+    except Exception as e:
+        logger = get_logger(__file__)
+        logger.exception(f"Что-то пошло не так: {e}")
+    else:
+        if response_text is not None:
+            update.message.reply_text(response_text)
+
+
+if __name__ == "__main__":
     load_dotenv()
+    logger = get_logger(__file__)
+
     bot_api_token = os.getenv('TG_BOT_API_TOKEN')
     telegram_chat_id = os.getenv('TG_BOT_CHAT_ID')
 
