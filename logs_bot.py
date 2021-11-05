@@ -1,15 +1,13 @@
 import logging
-import os
 
-from dotenv import load_dotenv
 from telegram.bot import Bot
+
+from config import TG_LOGS_BOT_API_TOKEN, TG_USER_CHAT_ID
 
 
 logging.basicConfig(format="%(asctime)s %(levelname)s %(message)s")
 logger = logging.getLogger()
 logger.setLevel("INFO")
-
-load_dotenv()
 
 
 class TelegramLogsHandler(logging.Handler):
@@ -24,10 +22,7 @@ class TelegramLogsHandler(logging.Handler):
 
 
 def get_logger():
-    tg_user_id = os.getenv('TG_USER_CHAT_ID')
-    tg_logs_bot_api_token = os.getenv('TG_LOGS_BOT_API_TOKEN')
-
-    logs_bot = Bot(token=tg_logs_bot_api_token)
-    logger.addHandler(TelegramLogsHandler(logs_bot, tg_user_id))
+    logs_bot = Bot(token=TG_LOGS_BOT_API_TOKEN)
+    logger.addHandler(TelegramLogsHandler(logs_bot, TG_USER_CHAT_ID))
 
     return logger

@@ -1,10 +1,9 @@
-import os
 import random
 
-from dotenv import load_dotenv
 import vk_api
 from vk_api.longpoll import VkLongPoll, VkEventType
 
+from config import VK_TOKEN
 from logs_bot import get_logger
 from dialogflow_intents.detection import detect_intent
 
@@ -36,9 +35,7 @@ def answer(event, vk_api):
 
 
 if __name__ == "__main__":
-    load_dotenv()
-
-    vk_session = vk_api.VkApi(token=os.getenv("VK_TOKEN"))
+    vk_session = vk_api.VkApi(token=VK_TOKEN)
     vk_api = vk_session.get_api()
 
     longpoll = VkLongPoll(vk_session)

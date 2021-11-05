@@ -1,10 +1,10 @@
-import os
 import sys
 
 from google.api_core.exceptions import BadRequest
 from google.cloud import dialogflow
-from dotenv import load_dotenv
 import requests
+
+from config import DIALOG_FLOW_PROJECT_ID
 
 
 JSON_WITH_PHRASES = (
@@ -62,19 +62,15 @@ def read_data_from_json_file():
 
 
 if __name__ == "__main__":
-    load_dotenv()
-
     try:
         intents = read_data_from_json_file()
     except requests.exceptions.HTTPError:
         sys.exit("No json file found")
 
-    PROJECT_ID = os.getenv('DIALOG_FLOW_PROJECT_ID')
-
     try:
         for intent_name, intent_content in intents.items():
             create_intent(
-                PROJECT_ID,
+                DIALOG_FLOW_PROJECT_ID,
                 intent_name,
                 intent_content["questions"],
                 [intent_content["answer"]],

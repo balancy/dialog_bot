@@ -1,6 +1,6 @@
-import os
-
 from google.cloud import dialogflow
+
+from config import DIALOG_FLOW_PROJECT_ID, DIALOG_FLOW_SESSION_ID
 
 
 def detect_intent(text, accept_fallback_response=True):
@@ -13,8 +13,8 @@ def detect_intent(text, accept_fallback_response=True):
 
     session_client = dialogflow.SessionsClient()
     session = session_client.session_path(
-        project=os.getenv('DIALOG_FLOW_PROJECT_ID'),
-        session=os.getenv('DIALOG_FLOW_SESSION_ID'),
+        project=DIALOG_FLOW_PROJECT_ID,
+        session=DIALOG_FLOW_SESSION_ID,
     )
 
     text_input = dialogflow.TextInput(
