@@ -1,3 +1,5 @@
+import argparse
+import json
 import sys
 
 from google.api_core.exceptions import BadRequest
@@ -49,23 +51,41 @@ def create_intent(
     intents_client.create_intent(request={"parent": parent, "intent": intent})
 
 
-def read_data_from_json_file():
+def read_data_from_json_file(url):
     """Reads intents from json file.
 
+    :param url: url to JSON file
     :return: file content in structured format
     """
 
-    response = requests.get(JSON_WITH_PHRASES)
+    response = requests.get(url)
     response.raise_for_status()
 
     return response.json()
 
 
 if __name__ == "__main__":
+    parser = argparse.ArgumentParser(
+        description=(
+            'Create dialogflow intents based on the JSON file from given url.'
+        )
+    )
+    parser.add_argument(
+        "-u",
+        "--url",
+        type=str,
+        default=JSON_WITH_PHRASES,
+        help="url to the JSON file",
+    )
+    args = parser.parse_args()
+    url = args.url
+
     try:
-        intents = read_data_from_json_file()
+        intents = read_data_from_json_file(url)
     except requests.exceptions.HTTPError:
-        sys.exit("No json file found")
+        sys.exit(f"\"{url}\" not found")
+    except json.decoder.JSONDecodeError:
+        sys.exit(f"No JSON file found on \"{url}\"")
 
     try:
         for intent_name, intent_content in intents.items():
@@ -76,4 +96,6 @@ if __name__ == "__main__":
                 [intent_content["answer"]],
             )
     except BadRequest:
-        sys.exit("Couldn't create intents")
+        sys.exit(
+            "Couldn't create intents, maybe because they are already created"
+        )
