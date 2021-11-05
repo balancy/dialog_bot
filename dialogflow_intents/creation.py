@@ -1,6 +1,7 @@
 import argparse
 import json
 import sys
+import traceback
 
 from google.api_core.exceptions import BadRequest
 from google.cloud import dialogflow
@@ -84,8 +85,14 @@ if __name__ == "__main__":
         intents = read_data_from_json_file(url)
     except requests.exceptions.HTTPError:
         sys.exit(f"\"{url}\" not found")
+    except requests.exceptions.ConnectionError:
+        sys.exit(f"Connection error occured. Try later.")
+    except requests.exceptions.Timeout:
+        sys.exit(f"Timeout error occured. Try later.")
     except json.decoder.JSONDecodeError:
         sys.exit(f"No JSON file found on \"{url}\"")
+    except Exception as e:
+        sys.exit(traceback.format_exc())
 
     try:
         for intent_name, intent_content in intents.items():
@@ -99,3 +106,5 @@ if __name__ == "__main__":
         sys.exit(
             "Couldn't create intents, maybe because they are already created"
         )
+    except Exception as e:
+        sys.exit(traceback.format_exc())

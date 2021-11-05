@@ -28,12 +28,9 @@ def detect_intent(text, accept_fallback_response=True):
         query_input=query_input,
     )
 
-    if response.query_result.intent and (
+    if (intent := response.query_result.intent) and (
         accept_fallback_response
-        or (
-            not response.query_result.intent.is_fallback
-            and not accept_fallback_response
-        )
+        or not (intent.is_fallback or accept_fallback_response)
     ):
         return response.query_result.fulfillment_text
     else:
