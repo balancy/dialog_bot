@@ -1,14 +1,16 @@
+import logging
 import random
+from telegram.bot import Bot
 
 import vk_api
 from vk_api.longpoll import VkLongPoll, VkEventType
 
-from config import VK_TOKEN
-from logs_bot import get_logger
+from config import TG_LOGS_BOT_API_TOKEN, TG_USER_CHAT_ID, VK_TOKEN
+from logs_handler import TelegramLogsHandler
 from dialogflow_intents.detection import detect_intent
 
 
-logger = get_logger()
+logger = logging.getLogger(__file__)
 
 
 def answer(event, vk_api):
@@ -37,6 +39,9 @@ def answer(event, vk_api):
 if __name__ == "__main__":
     vk_session = vk_api.VkApi(token=VK_TOKEN)
     vk_api = vk_session.get_api()
+
+    logs_bot = Bot(token=TG_LOGS_BOT_API_TOKEN)
+    logger.addHandler(TelegramLogsHandler(logs_bot, TG_USER_CHAT_ID))
 
     longpoll = VkLongPoll(vk_session)
 

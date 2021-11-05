@@ -1,12 +1,18 @@
+import logging
+
 from telegram import Bot
 from telegram.ext import CommandHandler, Filters, MessageHandler, Updater
 
-from config import TG_DIALOG_BOT_API_TOKEN
+from config import (
+    TG_DIALOG_BOT_API_TOKEN,
+    TG_LOGS_BOT_API_TOKEN,
+    TG_USER_CHAT_ID,
+)
 from dialogflow_intents.detection import detect_intent
-from logs_bot import get_logger
+from logs_handler import TelegramLogsHandler
 
 
-logger = get_logger()
+logger = logging.getLogger(__file__)
 
 
 def greet_user_handler(update, context):
@@ -30,6 +36,9 @@ def detect_intent_handler(update, context):
 
 
 if __name__ == "__main__":
+    logs_bot = Bot(token=TG_LOGS_BOT_API_TOKEN)
+    logger.addHandler(TelegramLogsHandler(logs_bot, TG_USER_CHAT_ID))
+
     dialog_bot = Bot(token=TG_DIALOG_BOT_API_TOKEN)
     updater = Updater(bot=dialog_bot)
 
