@@ -85,17 +85,17 @@ if __name__ == "__main__":
     except json.decoder.JSONDecodeError:
         sys.exit(f"No JSON file found on url \"{url}\"")
 
-    try:
-        for intent_name, intent_content in intents.items():
+    for intent_name, intent_content in intents.items():
+        try:
             create_intent(
                 DIALOG_FLOW_PROJECT_ID,
                 intent_name,
                 intent_content["questions"],
                 [intent_content["answer"]],
             )
-    except BadRequest:
-        sys.exit(
-            "Couldn't create intents, maybe because they are already created"
-        )
-    except Exception as e:
-        sys.exit(traceback.format_exc())
+        except:
+            print(
+                f"It's not possible to create intent \"{intent_name}\". "
+                "Maybe it's already created."
+            )
+            pass
