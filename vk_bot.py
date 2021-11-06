@@ -37,11 +37,12 @@ def answer(event, vk_api):
 
 
 if __name__ == "__main__":
-    vk_session = vk_api.VkApi(token=VK_TOKEN)
-    vk_api = vk_session.get_api()
-
     logs_bot = Bot(token=TG_LOGS_BOT_API_TOKEN)
     logger.addHandler(TelegramLogsHandler(logs_bot, TG_USER_CHAT_ID))
+    logger.setLevel("INFO")
+
+    vk_session = vk_api.VkApi(token=VK_TOKEN)
+    vk_api = vk_session.get_api()
 
     longpoll = VkLongPoll(vk_session)
 

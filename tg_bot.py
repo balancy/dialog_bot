@@ -31,13 +31,13 @@ def detect_intent_handler(update, context):
     response_text = detect_intent(text)
     logger.info(f"Responded \"{response_text}\" to {username} in telegram")
 
-    if response_text is not None:
-        update.message.reply_text(response_text)
+    update.message.reply_text(response_text)
 
 
 if __name__ == "__main__":
     logs_bot = Bot(token=TG_LOGS_BOT_API_TOKEN)
     logger.addHandler(TelegramLogsHandler(logs_bot, TG_USER_CHAT_ID))
+    logger.setLevel("INFO")
 
     dialog_bot = Bot(token=TG_DIALOG_BOT_API_TOKEN)
     updater = Updater(bot=dialog_bot)
