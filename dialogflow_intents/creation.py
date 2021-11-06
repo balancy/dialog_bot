@@ -10,10 +10,7 @@ import requests
 from config import DIALOG_FLOW_PROJECT_ID
 
 
-JSON_WITH_PHRASES = (
-    "https://dvmn.org/media/filer_public/a7/db/a7db66c0-1259-4dac-9726-2d1fa9"
-    "c44f20/questions.json"
-)
+JSON_WITH_PHRASES = "https://bit.ly/3mNQr8T"
 
 
 def create_intent(
