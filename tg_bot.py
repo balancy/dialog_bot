@@ -28,7 +28,7 @@ def detect_intent_handler(update, context):
     text = update.message.text
     logger.info(f"Received \"{text}\" from {username} in telegram")
 
-    response_text = detect_intent(text)
+    _, response_text = detect_intent(text)
     logger.info(f"Responded \"{response_text}\" to {username} in telegram")
 
     update.message.reply_text(response_text)

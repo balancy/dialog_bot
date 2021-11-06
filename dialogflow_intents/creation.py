@@ -10,8 +10,6 @@ import requests
 from config import DIALOG_FLOW_PROJECT_ID, JSON_WITH_PHRASES
 
 
-
-
 def create_intent(
     project_id, display_name, training_phrases_parts, message_texts
 ):
@@ -97,4 +95,3 @@ if __name__ == "__main__":
                 f"It's not possible to create intent \"{intent_name}\". "
                 "Maybe it's already created."
             )
-            pass

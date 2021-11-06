@@ -3,11 +3,10 @@ from google.cloud import dialogflow
 from config import DIALOG_FLOW_PROJECT_ID, DIALOG_FLOW_SESSION_ID
 
 
-def detect_intent(text, accept_fallback_response=True):
+def detect_intent(text):
     """Uses dialogflow API to receive an answer to given text
 
     :param text: given text
-    :param accept_fallback_response: if we react on fallback response or not
     :return: answer
     """
 
@@ -28,10 +27,7 @@ def detect_intent(text, accept_fallback_response=True):
         query_input=query_input,
     )
 
-    if (intent := response.query_result.intent) and (
-        accept_fallback_response
-        or not (intent.is_fallback or accept_fallback_response)
-    ):
-        return response.query_result.fulfillment_text
-    else:
-        return None
+    return (
+        response.query_result.intent.is_fallback,
+        response.query_result.fulfillment_text,
+    )

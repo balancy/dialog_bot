@@ -25,9 +25,9 @@ def answer(event, vk_api):
     user_id = event.user_id
 
     logger.info(f"Received \"{text}\" from id{user_id} in VK")
-    message = detect_intent(text, accept_fallback_response=False)
+    is_fallback, message = detect_intent(text)
 
-    if message is not None:
+    if not is_fallback:
         logger.info(f"Responded \"{message}\" to id{user_id} in VK")
         vk_api.messages.send(
             user_id=user_id,
