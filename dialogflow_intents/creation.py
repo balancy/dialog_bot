@@ -84,15 +84,9 @@ if __name__ == "__main__":
     try:
         intents = read_data_from_json_file(url)
     except requests.exceptions.HTTPError:
-        sys.exit(f"\"{url}\" not found")
-    except requests.exceptions.ConnectionError:
-        sys.exit(f"Connection error occured. Try later.")
-    except requests.exceptions.Timeout:
-        sys.exit(f"Timeout error occured. Try later.")
+        sys.exit(f"Url \"{url}\" isn't found. Check if it's correct.")
     except json.decoder.JSONDecodeError:
-        sys.exit(f"No JSON file found on \"{url}\"")
-    except Exception as e:
-        sys.exit(traceback.format_exc())
+        sys.exit(f"No JSON file found on url \"{url}\"")
 
     try:
         for intent_name, intent_content in intents.items():
