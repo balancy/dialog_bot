@@ -7,10 +7,9 @@ from google.api_core.exceptions import BadRequest
 from google.cloud import dialogflow
 import requests
 
-from config import DIALOG_FLOW_PROJECT_ID
+from config import DIALOG_FLOW_PROJECT_ID, JSON_WITH_PHRASES
 
 
-JSON_WITH_PHRASES = "https://bit.ly/3mNQr8T"
 
 
 def create_intent(

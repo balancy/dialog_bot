@@ -1,4 +1,4 @@
-python-dotenv==0.19.1
-python-telegram-bot==13.7
+environs==9.3.4
 google-cloud-dialogflow==2.9.1
+python-telegram-bot==13.7
 vk-api==11.9.6
