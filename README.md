@@ -15,24 +15,25 @@ If they don't understand what is written, they'll be silent or they'll respond t
 
 ## Install
 
-At least Python 3.8, as well as Poetry and Git, should be already installed.
+At least Python 3.8 and Git should be already installed.
 
 1. Clone the repository by command:
 ```console
 git clone git@github.com:balancy/speech_recognition_bot.git
 ```
 
-2. Go inside cloned repository and activate virtal environment:
+2. Go inside cloned repository, create and activate virtal environment:
 ```console
-poetry shell
+python -m venv env
+source env/bin/activate (env\scripts\activate for Windows)
 ```
 
 3. Install dependecies:
 ```console
-poetry install
+pip install -r requirements.txt
 ```
 
-4. Rename `.env.example` to `.env` and define your proper values for environment variables:
+4. Rename `.env.example` to `.env` and define your proper environment variables:
 
 - `TG_DIALOG_BOT_API_TOKEN` - token of your dialog telegram bot
 - `TG_LOGS_BOT_API_TOKEN` - token of your logs telegram bot
@@ -42,7 +43,15 @@ poetry install
 - `GOOGLE_APPLICATION_CREDENTIALS` - json file-key with your google credentials
 - `VK_TOKEN` - token of your vkontakte group
 
-## Launch
+## Create dialogflow intents from json file url (optional)
+
+```
+python -m dialogflow_intents.creation --url <url_to_json_file_with_phrases>
+```
+
+where "--url <url_to_json>" is optional (by default it'll use predefined json url)
+
+## Launch bots
 
 1. Run telegram bot
 ```console
